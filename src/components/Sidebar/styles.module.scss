@@ -1,0 +1,68 @@
+@import "../../styles/colors";
+
+.sidebarContainer {
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  background-color: $primary;
+  top: 0;
+  padding: 36px 0;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $white;
+    padding: 0 48px;
+
+    span {
+      font-size: 27px;
+      line-height: 33px;
+      font-weight: 700;
+      width: 180px;
+    }
+  }
+
+  main {
+    $footerHeight: 174px;
+    $verticalPadding: 36px;
+    $headerHeight: 66px;
+
+    $mainHeight: calc(100vh - $verticalPadding - $headerHeight - $footerHeight);
+
+    height: $mainHeight;
+
+    padding: 0 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  footer {
+    background-color: unset;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+
+      span {
+        font-size: 28px;
+        line-height: 15px;
+        font-weight: 700;
+        color: $white;
+      }
+    }
+    button {
+      border: 0;
+      font-size: 28px;
+      line-height: 15px;
+      font-weight: 700;
+      background-color: $black;
+      padding: 40px 0;
+      margin-top: 48px;
+      color: $white;
+      width: 100%;
+    }
+  }
+}

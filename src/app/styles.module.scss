@@ -1,0 +1,76 @@
+@import "../styles/colors";
+
+.pageContainer {
+    position: relative;
+  header {
+    background-color: $primary;
+    > div {
+      padding: 28px 65px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .nome {
+        gap: 4px;
+        display: flex;
+        align-items: flex-end;
+        color: $white;
+        h1 {
+          font-size: 40px;
+          line-height: 19px;
+          font-weight: 600;
+        }
+        h6 {
+          font-size: 20px;
+          line-height: 19px;
+          font-weight: 300;
+        }
+      }
+
+      .carrinho {
+        color: $black;
+        width: 90px;
+        height: 45px;
+        border-radius: 8px;
+        border: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: center;
+
+        span {
+          font-size: 18px;
+          line-height: 22px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  main {
+    $headerHeight: 101px;
+    $footerHeight: 19px;
+    $mainHeight: calc(100vh - $headerHeight - $footerHeight);
+
+    height: $mainHeight;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 22px;
+  }
+
+  footer {
+    background-color: $grey;
+    padding: 8px 0;
+    text-align: center;
+
+    span {
+      size: 12px;
+      font-weight: 400;
+      line-height: 14px;
+    }
+  }
+}

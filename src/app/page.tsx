@@ -1,95 +1,80 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { useProducts } from "@/hooks/useProducts";
+import styles from "./styles.module.scss";
+import { ShoppingCart } from "@phosphor-icons/react";
+import { ProductCard } from "@/components/ProductCard/index";
+import { Sidebar } from "@/components/Sidebar";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
+  const { data } = useProducts({
+    page: 1,
+    rows: 5,
+    sortBy: "id",
+    orderBy: "ASC",
+  });
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const [productsCart, setProductsCart] = useState<ProductCart[]>([]);
+
+  const handleAddToCart = (product: Product) => {
+    const foundProduct = productsCart.find(
+      (productCart) => productCart.id === product.id
+    );
+    if (!foundProduct) {
+      setProductsCart([...productsCart, { ...product, amount: 1 }]);
+    } else {
+      const updatedCart = productsCart.map((productCart) => {
+        if (productCart.id === product.id) {
+          return { ...productCart, amount: productCart.amount + 1 };
+        }
+        return productCart;
+      });
+
+      setProductsCart(updatedCart);
+    }
+  };
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
+    <div className={styles.pageContainer}>
+      <header>
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div className={styles.nome}>
+            <h1>MKS</h1>
+            <h6>Sistemas</h6>
+          </div>
+
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className={styles.carrinho}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            <ShoppingCart size={18} />
+            <span>{productsCart.length}</span>
+          </button>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      </header>
+      <main>
+        {data.map((product) => (
+          <ProductCard
+            handleAddToCart={() => handleAddToCart(product)}
+            key={product.id}
+            product={product}
+          />
+        ))}
+      </main>
+      <footer>
+        <span>MKS sistemas © Todos os direitos reservados</span>
+      </footer>
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <Sidebar
+            productsCart={productsCart}
+            setProductsCart={setProductsCart}
+            handleCloseSidebar={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
